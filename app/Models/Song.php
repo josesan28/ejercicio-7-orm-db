@@ -26,7 +26,7 @@ class Song extends Model
         return $this->belongsTo(Artist::class);
     }
 
-    /** Una canción pertenece a un álbum, puede ser null */
+    /** Una canción pertenece a un álbum (puede ser null) */
     public function album(): BelongsTo
     {
         return $this->belongsTo(Album::class);
@@ -42,6 +42,7 @@ class Song extends Model
     public function playlists(): BelongsToMany
     {
         return $this->belongsToMany(Playlist::class, 'playlist_song')
+                    ->using(PlaylistSong::class)
                     ->withPivot(['position', 'added_at']);
     }
 

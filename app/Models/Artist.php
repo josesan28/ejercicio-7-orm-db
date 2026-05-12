@@ -32,10 +32,12 @@ class Artist extends Model
 
     /**
      * Usuarios que siguen al artista.
+     * Inversa de User::followedArtists()
      */
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'follows', 'artist_id', 'user_id')
+                    ->using(Follow::class)
                     ->withPivot('followed_at');
     }
 }

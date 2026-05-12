@@ -41,18 +41,23 @@ class User extends Model
     /**
      * Los artistas que sigue el usuario.
      * Relación muchos a muchos a través de la tabla follows.
+     *
+     * NOTA: se omite withTimestamps() porque la tabla follows no tiene
+     * columnas created_at/updated_at; solo tiene followed_at.
+     * Usar withTimestamps() causaría un error al insertar.
      */
     public function followedArtists(): BelongsToMany
     {
         return $this->belongsToMany(Artist::class, 'follows', 'user_id', 'artist_id')
-                    ->withPivot('followed_at')
-                    ->withTimestamps();
+                    ->using(Follow::class)
+                    ->withPivot('followed_at');
     }
 
-    /** Canciones que le han gustado al usuario */
+    /** Canciones que le han gustado al usuario (a través de likes) */
     public function likedSongs(): BelongsToMany
     {
         return $this->belongsToMany(Song::class, 'likes', 'user_id', 'song_id')
+                    ->using(Like::class)
                     ->withPivot('liked_at');
     }
 }

@@ -2,11 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Like extends Model
+/**
+ * Modelo para la tabla pivot likes.
+ * Extiende Pivot porque representa la relación muchos-a-muchos
+ * entre User y Song.
+ * La tabla solo tiene liked_at, no created_at/updated_at.
+ */
+class Like extends Pivot
 {
+    protected $table = 'likes';
+
     public $timestamps = false;
 
     protected $fillable = ['user_id', 'song_id', 'liked_at'];
